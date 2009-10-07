@@ -1,13 +1,32 @@
 Sysmaster
 =========
 
-Introduction goes here.
+The Sysmaster telephony platform is based on a Sybase database. So the first step is to enable ruby to connect to Sybase. This is not easy! First, you need to install an ODBC client on your server (unixODBC or iODBC), then you need the ruby ODBC bindings from http://www.ch-werner.de/rubyodbc/ . Then you need to configure a DSN for your database and make sure everything is working.
 
+Basically, it's the same process as connecting to an SQL Server DB via ODBC. There's a great tutorial here:
+http://www.metaskills.net/2009/9/5/the-ultimate-os-x-snow-leopard-stack-for-rails-development-x86_64-macports-ruby-1-8-1-9-sql-server-more
+
+Also, Sysmaster typically runs TDS version 5.0 and on port 2000.
+
+Finally, you need the Sequel gem, too:
+http://sequel.rubyforge.org/
 
 Example
 =======
+# execute an sql query (be careful, Sybase is weird with straight SQL, use sysmaster functions when possible)
+Sysmaster.execute(sql_query)
 
-Example goes here.
+# retrieve the record for account #123
+Sysmaster.find_member(123)
+
+# check if the password for account #123 is swordfish
+Sysmaster.authenticate_account(123, 'swordfish')
+
+# add $5.00 to account #123
+Sysmaster.add_credit(123, 5.00) 
+
+# check the status of account #123
+Sysmaster.execute("select status from authentication where acctid=123").first[:status]
 
 
-Copyright (c) 2009 [name of plugin creator], released under the MIT license
+Copyright (c) 2009 Mani Tadayon, released under the MIT license
